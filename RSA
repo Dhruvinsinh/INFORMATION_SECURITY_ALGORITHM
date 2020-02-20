@@ -1,0 +1,63 @@
+import sympy
+import math
+def euclidian(r1,r2):
+	t1=0
+	t2=1
+	while(r2!=0):
+		q=int(r1/r2)
+		r=r1%r2
+		t=t1-t2*q
+		r1=r2
+		r2=r
+		t1=t2
+		t2=t
+	return r1
+def extended_euclidian(r1,r2):
+	t1=0
+	t2=1
+	z=r1
+	while(r2!=0):
+		q=int(r1/r2)
+		r=r1%r2
+		t=t1-t2*q
+		r1=r2
+		r2=r
+		t1=t2
+		t2=t
+	if(r1==1):
+		return t1%z
+	else:
+		return 0
+def binaryexponentiation(m,e,n):
+	binary=str(bin(e))
+	binary=binary[2:]
+	c=0
+	f=1
+	for i in binary:
+		c=c*2
+		f=(f*f)%n
+		if(i=='1'):
+			c=c+1
+			f=(f*m)%n
+	return f
+size=int(input("enter size"))
+size=int(size/4)
+k1="1"+("0"*(size-1))
+k2="9"*size
+p=sympy.randprime(int(k1),int(k2)) 
+q=sympy.randprime(int(k1),int(k2))
+n=p*q
+fn=(p-1)*(q-1)
+e=sympy.randprime(2,fn)
+d=extended_euclidian(fn,e)
+data=open("input","r+").read()
+enc=list()
+dec=list()
+pt=""
+for i in data:
+	enc.append(binaryexponentiation(ord(i),e,n))
+for i in enc:
+	dec.append(chr(int(binaryexponentiation(int(i),d,n))))
+for i in dec:
+	pt=pt+i
+print(pt)
